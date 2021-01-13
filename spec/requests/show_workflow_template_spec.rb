@@ -26,10 +26,9 @@ RSpec.describe 'Show a workflow template', type: :request do
   end
 
   context 'for an nonexistent template' do
-    it 'returns 404' do
+    it 'returns 400' do
       get '/workflow_templates/foo'
-
-      expect(response).to have_http_status(:not_found)
+      expect(response).to have_http_status(:bad_request)
     end
   end
 end

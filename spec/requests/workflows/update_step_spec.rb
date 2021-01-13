@@ -24,7 +24,6 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
     it 'clears the old error message, but preserves the lifecycle' do
       put "/dor/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
-
       wf.reload
       expect(wf.status).to eq 'completed'
       expect(wf.error_msg).to be_nil

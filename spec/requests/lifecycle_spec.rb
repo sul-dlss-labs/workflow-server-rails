@@ -60,7 +60,7 @@ RSpec.describe 'Lifecycle', type: :request do
       end
 
       it 'draws milestones from the current version' do
-        get "/objects/#{druid}/lifecycle?active-only=true&version=2"
+        get "/dor/objects/#{druid}/lifecycle?active-only=true&version=2"
         expect(returned_milestone_versions).to eq ['2']
         expect(returned_milestone_text).to eq ['submitted']
       end
@@ -103,7 +103,7 @@ RSpec.describe 'Lifecycle', type: :request do
     end
 
     it 'draws milestones from the all versions' do
-      get "/objects/#{druid}/lifecycle"
+      get "/dor/objects/#{druid}/lifecycle"
       expect(returned_milestone_versions).to match_array %w[1 2]
       expect(returned_milestone_text).to match_array %w[submitted submitted]
     end

@@ -1,0 +1,549 @@
+openapi: 3.0.0
+info:
+  description: Workflow Server HTTP API
+  version: 1.0.0
+  title: Workflow Server HTTP API
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://workflow-service-{env}.stanford.edu'
+    description: Production service
+    variables:
+      env:
+        default: prod
+  - url: 'https://workflow-service-{env}.stanford.edu'
+    description: Staging service
+    variables:
+      env:
+        default: stage
+paths:
+  /status:
+    get:
+      summary: OKComputer route for status checks
+      responses:
+        '200':
+          description: Response succeeded
+          content:
+            text/plain:
+              schema:
+                type: string
+  /{repo}/objects/{druid}/lifecycle:
+    get:
+      summary: Retrieve workflow lifecycle for an object
+      deprecated: true
+      responses:
+        '200':
+          description: Workflow lifecycle found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: active-only
+          in: query
+          required: false
+          schema:
+            type: boolean
+  /{repo}/objects/{druid}/versionClose:
+    post:
+      summary: Close the current version of the provided druid
+      deprecated: true
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: create-accession
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: version
+          in: query
+          required: false
+          schema:
+            type: integer 
+  /{repo}/objects/{druid}/workflows:
+    get:
+      summary: Retrieve workflow datastream for an object
+      deprecated: true
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+    delete:
+      summary: Delete all of the workflows for an object
+      deprecated: true
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+  /{repo}/objects/{druid}/workflows/{workflow}:
+    get:
+      summary: Show the named workflow for a given druid
+      deprecated: true
+      responses:
+        '200':
+          description: List of workflow steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+    put:
+      summary: Add provided workflow to object
+      deprecated: true
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+    delete:
+      summary: Delete the workflow from the object
+      deprecated: true
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /{repo}/objects/{druid}/workflows/{workflow}/{process}:
+    get:
+      summary: Retrieve the process steps for the provided workflow and druid
+      deprecated: true
+      responses:
+        '200':
+          description: List of process steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'          
+    put:
+      summary: Add a process to the provided workflow and druid
+      deprecated: true
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'
+  /objects/{druid}/workflows:
+    get:
+      summary: Retrieve workflow datastream for an object
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+    delete:
+      summary: Delete all of the workflows for an object
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+  /objects/{druid}/versionClose:
+    post:
+      summary: Close the current version of the provided druid
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: create-accession
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: version
+          in: query
+          required: false
+          schema:
+            type: integer 
+  /objects/{druid}/workflows/{workflow}:
+    get:
+      summary: Show the named workflow for a given druid
+      responses:
+        '200':
+          description: List of workflow steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+    post:
+      summary: Add provided workflow to object
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+  /objects/{druid}/workflows/{workflow}/{process}:
+    put:
+      summary: Add a process to the provided workflow and druid
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'
+  /workflow_templates:
+    get:
+      summary: Retrieve workflow template for given workflow
+      responses:
+        '200':
+          description: Workflow datastreams found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    externalIdentifier:
+                      $ref: '#/components/schemas/Workflow'
+  /workflow_templates/{workflow}:
+    get:
+      summary: Retrieve workflow template for given workflow
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/json:
+              schema:
+                type: string
+      parameters:
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /workflow_archive:
+    get:
+      summary: Retrieve archived workflows
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: workflow
+          in: query
+          required: false
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /workflow_queue:
+    get:
+      summary: Retrieve the workflow queue
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: completed
+          in: query
+          required: false
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+        - name: waiting
+          in: query
+          required: false
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+        - name: lane-id
+          in: query
+          required: false
+          example: default
+          schema:
+            type: string
+        - name: workflow
+          in: query
+          required: false
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /workflow_queue/lane_ids:
+    get:
+      summary: Retrieve the workflow queue based on the provided lane_id
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: step
+          in: query
+          required: true
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+  /workflow_queue/all_queued:
+    get:
+      summary: Retrieve the workflow queue for all queues
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          example: '10'
+          schema:
+            type: string
+        - name: hours-ago
+          in: query
+          required: false
+          example: 1
+          schema:
+            type: integer
+components:
+  schemas:
+    Druid:
+      description: Digital Repository Unique Identifier (bare or prefixed)
+      type: string
+      pattern: '^(druid:)?[b-df-hjkmnp-tv-z]{2}[0-9]{3}[b-df-hjkmnp-tv-z]{2}[0-9]{4}$'
+      example: 'druid:bc123df4567'
+    Process:
+      description: Process name
+      type: string
+      enum: [accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
+             content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create,
+             preservation-ingest-initiated, provenance-metadata, publish, publish-complete, reader-approval,
+             registrar-approval, remediate-object, reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer,
+             shelve, shelve-complete, start-accession, start-assembly, submit, technical-metadata, transfer-object, 
+             update-catalog, update-moab, validate-bag, verify-apo]
+    Repository:
+      description: Repository Identifier
+      deprecated: true
+      type: string
+      enum: [dor]
+    Workflow:
+      description: Workflow name
+      type: string
+      enum: [accession2WF, accessionWF, assemblyWF, digitizationWF, disseminationWF, dpgImageWF, eemsAccessionWF, etdSubmitWF,
+             gisAssemblyWF, gisDeliveryWF, gisDiscoveryWF, goobiWF, googleScannedBookWF, hydrusAssemblyWF, preservationAuditWF,
+             preservationIngestWF, registrationWF, releaseWF, sdrAuditWF, sdrIngestWF, sdrMigrationWF, sdrRecoveryWF, swIndexWF,
+             versioningWF, wasCrawlDisseminationWF, wasCrawlPreassemblyWF, wasDisseminationWF, wasSeedDisseminationWF, wasSeedPreassemblyWF]

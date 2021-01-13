@@ -22,10 +22,9 @@ RSpec.describe 'Show a workflow step for an object', type: :request do
   end
 
   context 'when step does not exist' do
-    it 'returns 404' do
+    it 'returns 400' do
       get "/dor/objects/#{step.druid}/workflows/#{step.workflow}/#{step.process}x"
-
-      expect(response).to be_not_found
+      expect(response).to have_http_status(:bad_request)
     end
   end
 end

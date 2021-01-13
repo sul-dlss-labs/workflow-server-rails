@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rails', '~> 6.1.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'committee' # Validates HTTP requests/responses per OpenAPI specification
 gem 'config', '~> 2.0'
 gem 'druid-tools'
 gem 'honeybadger', '~> 4.1'

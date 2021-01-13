@@ -71,6 +71,20 @@ jobs:
         name: Check styles using rubocop
         command: bundle exec rubocop
 
+    - run:
+        name: Validate API specification
+        command: |
+          sudo npm install -g openapi-enforcer-cli
+          result=$(openapi-enforcer validate openapi.yml)
+          [[ $result =~ "Document is valid" ]] && {
+          echo "API specification is valid OAS (but may have warnings, see below)"
+          echo $result
+          exit 0
+          } || {
+          echo $result
+          exit 1
+          }
+
     # Run rspec in parallel
     - run:
         name: Run rspec in parallel
