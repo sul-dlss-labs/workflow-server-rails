@@ -15,11 +15,15 @@
     <label>Create/update Moab object from deposit bag</label>
     <prereq>validate-bag</prereq>
   </process>
-  <process name="update-catalog" sequence="5">
-    <label>Create/update Preservation Catalog entry</label>
+  <process name="validate-moab" sequence="5">
+    <label>Verify the Moab on local disk passes validation, including checksums</label>
     <prereq>update-moab</prereq>
   </process>
-  <process name="complete-ingest" sequence="6">
+  <process name="update-catalog" sequence="6">
+    <label>Create/update Preservation Catalog entry</label>
+    <prereq>validate-moab</prereq>
+  </process>
+  <process name="complete-ingest" sequence="7">
     <label>Clean up workspace; transfer control back to accessioning</label>
     <prereq>update-catalog</prereq>
   </process>
